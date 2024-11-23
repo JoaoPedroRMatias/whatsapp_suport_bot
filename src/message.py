@@ -46,4 +46,4 @@ def request_message(data):
     message_data = MessageData(evento, instancia, destino, remote_jid, from_me, message_id,
                                push_name, mensagem, message_type, timestamp, owner, source)
 
-    print(message_data)
+    return message_data
