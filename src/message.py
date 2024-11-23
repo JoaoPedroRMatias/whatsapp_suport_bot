@@ -28,6 +28,7 @@ class MessageData:
                 f"Owner: {self.owner}\n"
                 f"Source: {self.source}")
     
+    
 def request_message(data):
     evento = data.get('event')
     instancia = data.get('instance')

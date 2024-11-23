@@ -16,5 +16,6 @@ def webhook():
     #return generate(message), 200
     return "Retorno com OpenIA desligado.", 200
 
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

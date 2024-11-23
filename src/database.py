@@ -28,7 +28,7 @@ def connect_db():
         return None
 
 
-def search_user(conn):
+def search_user_all(conn):
     try:
         cursor = conn.cursor()
 
@@ -44,9 +44,3 @@ def search_user(conn):
     finally:
         if cursor:
             cursor.close()
-
-
-conn = connect_db()
-
-
-
