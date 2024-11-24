@@ -6,16 +6,10 @@ load_dotenv()
 client = OpenAI()
 
 
-def generate(message, thread_id=None):
-    if not thread_id:
-        #thread = client.beta.threads.create()
-        #thread_id = thread.id
-        #print(f"Nova thread criada com ID: {thread_id}")
-        pass
-    else:
-        #print(f"Usando thread existente com ID: {thread_id}")
-        pass
-    
+def create_credencials():
+    thread = client.beta.threads.create()
+    thread_id = thread.id
+
     assistant = client.beta.assistants.create(
         name="Dr Licita",
         instructions="Você é um advogado focado em licitações.",
@@ -23,20 +17,25 @@ def generate(message, thread_id=None):
         model="gpt-4o",
     )
 
+    credencials = [thread_id, assistant.id]
+    return credencials
+
+
+def generate(message, assistant_id, thread_id):
     client.beta.threads.messages.create(
-        thread_id="thread_PMgAMO7ENzY97TYDpJvQnToI",
+        thread_id= thread_id,
         role="user",
         content=message,
     )
 
     run = client.beta.threads.runs.create_and_poll(
-        thread_id="thread_PMgAMO7ENzY97TYDpJvQnToI",
-        assistant_id=assistant.id,
+        thread_id= thread_id,
+        assistant_id= assistant_id,
         instructions="Trate o usuário com formalidade."
     )
 
     if run.status == "completed":
-        messages = client.beta.threads.messages.list(thread_id="thread_PMgAMO7ENzY97TYDpJvQnToI")
+        messages = client.beta.threads.messages.list(thread_id= thread_id)
         
         messages_sorted = sorted(messages, key=lambda msg: msg.created_at, reverse=True)
         last_message = messages_sorted[0]
