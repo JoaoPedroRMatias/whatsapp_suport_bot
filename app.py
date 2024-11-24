@@ -11,6 +11,8 @@ def webhook():
     data = request.get_json()  
     data = request_message(data)
 
+    print(f"\n{data}")
+
     result = chech_remote_jid(conn, data.remote_jid)
     
     if result == []:
