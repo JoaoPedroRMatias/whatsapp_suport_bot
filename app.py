@@ -12,7 +12,7 @@ def webhook():
     data = request.get_json()  
     data = request_message(data)
 
-    print(f"\n{data}")
+    print(f"\n{data}", flush=True)
 
     result = chech_remote_jid(conn, data.remote_jid)
     
@@ -21,6 +21,7 @@ def webhook():
         create_user(conn, data.remote_jid, data.push_name, credencials[0], credencials[1])
 
         message_genarate = generate(data.mensagem, credencials[1], credencials[0])
+        send_message(message_genarate, data.remote_jid)
         return "Mensagem enviada com sucesso"
 
     else:
@@ -33,4 +34,4 @@ def webhook():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=True)

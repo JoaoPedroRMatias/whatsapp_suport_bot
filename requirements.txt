@@ -1,6 +1,5 @@
 python-dotenv
 openai
 flask
-psycopg2
 psycopg2-binary
 requests

@@ -44,4 +44,4 @@ def generate(message, assistant_id, thread_id):
         return last_message_text
 
     else:
-        print(f"Status do processamento: {run.status}")
+        print(f"Status do processamento: {run.status}", flush=True)

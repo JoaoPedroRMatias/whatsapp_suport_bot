@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  flask_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: whatsapp_suporte_bot
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    restart: always
+
+  evolution-api:
+    container_name: evolution_api
+    image: atendai/evolution-api:v1.8.2
+    restart: always
+    ports:
+      - "9595:8080"
+    env_file:
+      - .env
+    volumes:
+      - evolution_instances:/evolution/instances
+
+volumes:
+  evolution_instances:
