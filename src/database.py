@@ -1,6 +1,8 @@
 import psycopg2
 from dotenv import load_dotenv
 import os
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 load_dotenv()
@@ -72,3 +74,31 @@ def create_user(conn, remote_jid, push_name, id_thread, id_assistance):
     finally:
         if cursor:
             cursor.close()
+
+
+def similar_search(message, conn):
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT instrumento, finalidade, tema_assunto, juris, adequada_a_nll, 
+               base_legal_nllc, base_legal_llc, link_da_peca, temas_boletim_tc_numero, palavra_chave
+        FROM jurisprudencia_tribunais
+    """)    
+    rows = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    textos = [f"{row[1]} {row[2]} {row[3]} {row[4]}" for row in rows]
+
+    vectorizer = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = vectorizer.fit_transform(textos)
+
+    message_vector = vectorizer.transform([message])
+
+    similarities = cosine_similarity(message_vector, tfidf_matrix)
+
+    similar_indices = similarities.argsort()[0][-3:][::-1]
+
+    similar_rows = [rows[i] for i in similar_indices]
+    return similar_rows
