@@ -24,7 +24,7 @@ def connect_db():
         return conn
 
     except Exception as error:
-        print(f"Erro ao conectar ao banco de dados: {error}")
+        print(f"Erro ao conectar ao banco de dados: {error}", flush=True)
         return None
 
 
@@ -43,7 +43,7 @@ def chech_remote_jid(conn, remote_jid):
         return rows
 
     except Exception as error:
-        print(f"Erro ao executar a consulta: {error}")
+        print(f"Erro ao executar a consulta: {error}", flush=True)
         return None
 
     finally:
@@ -66,7 +66,7 @@ def create_user(conn, remote_jid, push_name, id_thread, id_assistance):
         return True
 
     except Exception as error:
-        print(f"Erro ao inserir o registro: {error}")
+        print(f"Erro ao inserir o registro: {error}", flush=True)
         return False
 
     finally:
