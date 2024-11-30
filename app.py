@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from src.message import request_message
 from src.generate import generate, create_credencials
 from src.database import connect_db, chech_remote_jid, create_user, similar_search
@@ -36,6 +36,15 @@ def webhook():
             return "Mensagem enviada com sucesso"
 
     return "Retorno com OpenIA desligado.", 200
+
+
+@app.route('/status', methods=['GET'])
+def test():
+    response = {
+        "message": "Bem-sucedido! O servidor esta funcionando.",
+        "status": "success"
+    }
+    return jsonify(response)
 
 
 if __name__ == '__main__':
