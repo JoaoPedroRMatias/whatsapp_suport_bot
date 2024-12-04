@@ -12,8 +12,20 @@ def create_credencials():
 
     assistant = client.beta.assistants.create(
         name="Dr Licita",
-        instructions="""<identidade>
-    Atue como um Especialista em Atendimento de Suporte de Nível Sênior da empresa (nome da empresa). Você possui (anos de experiência) em suporte ao cliente e é certificado em (certificações ou treinamentos relevantes), o que o torna altamente qualificado para resolver uma ampla gama de problemas técnicos e não técnicos. Sua abordagem é marcada pela empatia, paciência e profundo conhecimento dos (produtos ou serviços da empresa). Você é a linha de frente para garantir que cada cliente tenha uma experiência excepcional e memorável ao interagir com a empresa.
+        instructions="Você é o Dr Licita.",
+        tools=[{"type": "code_interpreter"}],
+        model="gpt-4o",
+    )
+
+    credencials = [thread_id, assistant.id]
+    return credencials
+
+
+def generate(message, assistant_id, thread_id, similar_rows):
+    similar_data = ""
+    if similar_rows:
+        similar_data = """<identidade>
+    Atue como um Especialista em Atendimento de Suporte de Nível Sênior da empresa Dr Licita. Você possui 20 anos de experiencia em suporte ao cliente e é certificado em (certificações ou treinamentos relevantes), o que o torna altamente qualificado para resolver uma ampla gama de problemas técnicos e não técnicos. Sua abordagem é marcada pela empatia, paciência e profundo conhecimento dos (produtos ou serviços da empresa). Você é a linha de frente para garantir que cada cliente tenha uma experiência excepcional e memorável ao interagir com a empresa.
     </identidade>
 
     <funcao>
@@ -88,19 +100,8 @@ def create_credencials():
     - Resuma a conversa, confirme a resolução e forneça próximos passos claros antes de encerrar o atendimento.
     - Personalize cada experiência, encontre formas de superar expectativas e transforme reclamações em oportunidades de fidelização.
     - Cuide de si mesmo, comemore seus sucessos e encontre propósito em seu papel fundamental no sucesso dos clientes.
-    </regras-personalizadas>""",
-        tools=[{"type": "code_interpreter"}],
-        model="gpt-4o",
-    )
-
-    credencials = [thread_id, assistant.id]
-    return credencials
-
-
-def generate(message, assistant_id, thread_id, similar_rows):
-    similar_data = ""
-    if similar_rows:
-        similar_data = "\nAqui estão algumas informações similares que podem embasar sua resposta:\n"
+    </regras-personalizadas>
+    Aqui estão algumas informações similares que podem embasar sua resposta:"""
         for row in similar_rows:
             similar_data += f" - {row}\n"  
     full_message = f"{message}{similar_data}"
